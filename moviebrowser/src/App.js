@@ -10,6 +10,7 @@ import Head from "./components/Header";
 import Foot from "./components/Footer";
 import Page from './components/Home';
 import ChooseHome from './components/ChooseHome';
+import Movie from "./components/Movie";
 
 function App() {
   return (
@@ -18,8 +19,9 @@ function App() {
         <Router>
         <Head />
           <Routes>
-            <Route path="/" element={<ChooseHome/>}></Route>
+            <Route path="/" element={<ChooseHome/>} />
             <Route path="/browse" element={<Page />} />
+            <Route path="/movie" element={<Movie />} />
           </Routes>
         <Foot />
         </Router>

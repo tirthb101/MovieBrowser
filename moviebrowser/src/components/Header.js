@@ -34,7 +34,7 @@ function Head() {
             <Flex direction='row' align='center' justify='space-between'>
                 
                 <Flex  direction='row'>
-                    <Heading paddingRight={10} >Movie DB</Heading>
+                    <Heading paddingRight={10} >Lights Out</Heading>
                     <Link  to='/'>
                         <Text paddingTop={3} >Home</Text>
                     </Link>

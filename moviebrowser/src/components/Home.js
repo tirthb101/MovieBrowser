@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState} from "react";
+import axios from "axios";
 import {
     Container,
     Flex,
@@ -19,72 +20,48 @@ import {
     Img,
     useColorMode,
     useColorModeValue,
-    useBreakpointValue
+    useBreakpointValue,
+    Center
 } from '@chakra-ui/react';
 
 function Page () {
     const { toggleColorMode } = useColorMode();
     const bgColor = useColorModeValue('gray.200', 'whiteAlpha.50');
     const colSpan = useBreakpointValue({base: 2, md: 1})
+    const [ state, setState] = useState('');
+
+    useEffect(() => {
+        const options = {
+            method: 'GET',
+            url: 'https://api.themoviedb.org/3/movie/popular?api_key=114c22764714091fcd3a585347932a48&language=en-US&page=1',
+            Headers: {
+              'content-type': 'application/json',
+            }
+          };
+
+
+        async function get_data() {
+            const data = await axios(options);
+            await setState(data.data.results);
+        }
+
+        get_data();
+    }, [])
+
+
     return (
-        <Container maxWidth='container.xl' padding={0}>
-            <Flex height={{'base': 'auto', 'md':'100vh'}} paddingY={{'base': 0, 'md': 10}} direction={{'base':'column-reverse', 'md':'row'}}>
-                <VStack
-                spacing={10}
-                padding={10}
-                w='full'
-                h='full'
-                alignItems='flex-start'>
-                    <VStack spacing={2} alignItems='flex-start'>
-                        <Heading size='2xl'>Your details</Heading>
-                        <Text>Click here if you already have a acount</Text>
-                    </VStack>
-                <SimpleGrid columns={2} columnGap={3} rowGap={6}>
-                    <GridItem colSpan={colSpan}>
-                        <FormControl>
-                            <FormLabel>First name</FormLabel>
-                                <Input placeholder="First name"/>
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={colSpan}>
-                        <FormControl>
-                            <FormLabel>Last name</FormLabel>
-                                <Input placeholder="Last name"/>
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={2}>
-                        <FormControl>
-                            <FormLabel>Address</FormLabel>
-                                <Input placeholder="Adress"/>
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={colSpan}>
-                        <FormControl>
-                            <FormLabel>City</FormLabel>
-                                <Input placeholder="City"/>
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={colSpan}>
-                        <FormControl>
-                            <FormLabel>Country</FormLabel>
-                                <Select>
-                                    <option value='usa'>Unitaed states of america</option>
-                                    <option value='uk'>Unitaed kingdom</option>
-                                    <option value='india'>India</option>
-                                </Select>
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={2}>
-                        <Checkbox defaultChecked>Ship to the billing address</Checkbox>
-                    </GridItem>
-                    <GridItem colSpan={2}>
-                        <Button variant='primary' size='lg' width='full'>Place order</Button>
-                    </GridItem>
-                </SimpleGrid>
-                
-                </VStack>
-            </Flex>
-        </Container>
+        <>
+        <Center margin={10}>
+            <FormControl>
+                <FormLabel>Search</FormLabel>
+                <Input placeholder="First name"/>
+            </FormControl>
+        </Center>
+        <SimpleGrid columns={2} columnGap={3} rowGap={6}  >
+        {state.map(movie => <GridItem margin={5}>{movie.backdrop_path}</GridItem>)}
+        </SimpleGrid>
+        
+        </>
     )
 }
 export default Page;

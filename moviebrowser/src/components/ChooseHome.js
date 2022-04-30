@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
     Container,
     Flex,
@@ -22,18 +23,47 @@ import {
     useBreakpointValue
 } from '@chakra-ui/react';
 
+import { Link} from 'react-router-dom';
+
+
+
+
+
 function ChooseHome () {
+    const [ state, setState] = useState('');
     const { toggleColorMode } = useColorMode();
     const bgColor = useColorModeValue('gray.200', 'whiteAlpha.50');
     const colSpan = useBreakpointValue({base: 2, md: 1})
+
+    
+    
+    
+    
+    useEffect(() => {
+        const options = {
+            method: 'GET',
+            url: 'https://api.themoviedb.org/3/movie/popular?api_key=114c22764714091fcd3a585347932a48&language=en-US&page=1',
+            Headers: {
+              'content-type': 'application/json',
+            }
+          };
+
+
+        async function get_data() {
+            const data = await axios(options);
+            await setState(data.data.results[0].backdrop_path);
+        }
+
+        get_data();
+    }, [])
     return (
         <div  id='back' style={{ 
-            backgroundImage: `url("https://parade.com/wp-content/uploads/2020/03/avengers-marvel.jpg")`
+            backgroundImage: `url("http://image.tmdb.org/t/p/w1280/${state}")`
           }}>
         <Container maxWidth='100vW'>
             <Flex direction='row' justify='space-evenly' height='80vH' alignItems='center'>
-                <Button marginLeft={7} padding={2}><Text fontSize='40px'>Surprise me</Text></Button>
-                <Button marginRight={7} padding={2}><Text fontSize='40px' >Browse</Text></Button>
+                <Button marginLeft={7} padding={2}><Text fontSize='40px' onClick=''>Surprise me</Text></Button>
+                <Button marginRight={7} padding={2}><Text fontSize='40px' ><Link to='/browse'>Browse</Link></Text></Button>
             </Flex>
         </Container>
         </div>

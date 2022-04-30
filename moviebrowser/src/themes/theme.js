@@ -53,6 +53,7 @@ const themen = extendTheme({
 
                 }),
             },
+
         },
         Input : {
            sizes: {
@@ -91,18 +92,6 @@ const themen = extendTheme({
                    _focus: {
                        ring: 2,
                        ringColor: 'brand.500'
-                   },
-               },
-           },
-       },
-       Select : {
-            variants : {
-               filled: {
-                   field: {
-                       borderRadius: 'none',
-                       _focus: {
-                           borderColor: 'brand.500'
-                       },
                    },
                },
            },
