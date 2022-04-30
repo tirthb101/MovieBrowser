@@ -25,6 +25,8 @@ import {
     Image
 } from '@chakra-ui/react';
 
+import { Link} from 'react-router-dom';
+
 function Page () {
     const { toggleColorMode } = useColorMode();
     const bgColor = useColorModeValue('gray.200', 'whiteAlpha.50');
@@ -54,16 +56,17 @@ function Page () {
         <>
         <Center margin={10}>
             <FormControl>
-                <FormLabel><Text>Search</Text></FormLabel>
+                <FormLabel><Heading>Search</Heading></FormLabel>
                 <Input placeholder="Search term"/>
             </FormControl>
         </Center>
         <SimpleGrid columns={4} columnGap={3} rowGap={6}  >
             {state.map(movie => <GridItem>
-                <AspectRatio ratio={0.5} w={250} >
-                    <Image src={`http://image.tmdb.org/t/p/w780${movie.poster_path}`} ></Image>
+                <Link to={movie.id}>
+                <AspectRatio marginLeft={8} ratio={0.5} w={250} >
+                    <Image borderRadius={15} src={`http://image.tmdb.org/t/p/w780${movie.poster_path}`} ></Image>
                 </AspectRatio>
-                <Text>{movie.original_title}</Text>
+                </Link>
             </GridItem>)}
         </SimpleGrid>
         
