@@ -23,7 +23,7 @@ import {
     useBreakpointValue
 } from '@chakra-ui/react';
 
-import { Link} from 'react-router-dom';
+import { Link, useNavigate, useRoutes } from 'react-router-dom';
 
 
 
@@ -33,11 +33,9 @@ function ChooseHome () {
     const [ state, setState] = useState('');
     const { toggleColorMode } = useColorMode();
     const bgColor = useColorModeValue('gray.200', 'whiteAlpha.50');
-    const colSpan = useBreakpointValue({base: 2, md: 1})
+    const colSpan = useBreakpointValue({base: 2, md: 1});
+    const navigate = useNavigate();
 
-    
-    
-    
     
     useEffect(() => {
         const options = {
@@ -55,14 +53,33 @@ function ChooseHome () {
         }
 
         get_data();
-    }, [])
+    }, []);
+
+    function surprise(){
+        const num = Math.floor(Math.random() * 10)
+        if (num === 1){
+            navigate('414906')
+        }
+        else if (num === 2){
+            navigate('508947')
+        }
+        else if(num === 3){
+            navigate('294793')
+        }
+        else if (num === 4){
+            navigate('335787')
+        }
+        else if (num === 5){
+            navigate('406759')
+        }
+    }
     return (
         <div  id='back' style={{ 
             backgroundImage: `url("http://image.tmdb.org/t/p/w1280/${state}")`
           }}>
         <Container maxWidth='100vW'>
             <Flex direction='row' justify='space-evenly' height='80vH' alignItems='center'>
-                <Button marginLeft={7} padding={2}><Text fontSize='40px' onClick=''>Surprise me</Text></Button>
+                <Button marginLeft={7} padding={2}><Text fontSize='40px' onClick={surprise}>Surprise me</Text></Button>
                 <Button marginRight={7} padding={2}><Text fontSize='40px' ><Link to='/browse'>Browse</Link></Text></Button>
             </Flex>
         </Container>

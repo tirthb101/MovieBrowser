@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from 'axios';
 
 import {
     Container,
@@ -17,6 +19,7 @@ import {
     HStack,
     Divider,
     AspectRatio,
+    Spacer,
     Img,
     useColorMode,
     useColorModeValue,
@@ -24,67 +27,55 @@ import {
 } from '@chakra-ui/react';
 
 function Movie(params){
+    const [state, setState] = useState('');
     const { toggleColorMode } = useColorMode();
     const bgColor = useColorModeValue('gray.200', 'whiteAlpha.50');
-    const colSpan = useBreakpointValue({base: 2, md: 1})
+    const movieID = useParams();
+    const colSpan = useBreakpointValue({base: 2, md: 1});
+
+    
+
+
+    useEffect(() => {
+        const options = {
+            method: 'GET',
+            url: `https://api.themoviedb.org/3/movie/${movieID.movieID}?api_key=114c22764714091fcd3a585347932a48`,
+            Headers: {
+              'content-type': 'application/json',
+            }
+          };
+
+
+        async function get_data() {
+            const data = await axios(options);
+            await setState(data.data);
+        }
+
+        get_data();
+    }, [movieID])
+
+
     return (
         <>
         <Container maxWidth='container.xl' padding={0}>
-            <Flex height={{'base': 'auto', 'md':'100vh'}} paddingY={{'base': 0, 'md': 10}} direction={{'base':'column-reverse', 'md':'row'}}>
-                <VStack
-                spacing={10}
-                padding={10}
-                w='full'
-                h='full'
-                alignItems='flex-start'>
-                    <VStack spacing={2} alignItems='flex-start'>
-                        <Heading size='2xl'>Your details</Heading>
-                        <Text>Click here if you already have a acount</Text>
-                    </VStack>
-                <SimpleGrid columns={2} columnGap={3} rowGap={6}>
-                    <GridItem colSpan={colSpan}>
-                        <FormControl>
-                            <FormLabel>First name</FormLabel>
-                                <Input placeholder="First name"/>
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={colSpan}>
-                        <FormControl>
-                            <FormLabel>Last name</FormLabel>
-                                <Input placeholder="Last name"/>
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={2}>
-                        <FormControl>
-                            <FormLabel>Address</FormLabel>
-                                <Input placeholder="Adress"/>
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={colSpan}>
-                        <FormControl>
-                            <FormLabel>City</FormLabel>
-                                <Input placeholder="City"/>
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={colSpan}>
-                        <FormControl>
-                            <FormLabel>Country</FormLabel>
-                                <Select>
-                                    <option value='usa'>Unitaed states of america</option>
-                                    <option value='uk'>Unitaed kingdom</option>
-                                    <option value='india'>India</option>
-                                </Select>
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={2}>
-                        <Checkbox defaultChecked>Ship to the billing address</Checkbox>
-                    </GridItem>
-                    <GridItem colSpan={2}>
-                        <Button variant='primary' size='lg' width='full'>Place order</Button>
-                    </GridItem>
-                </SimpleGrid>
+            <Flex>
+            <Flex width='50vW' margin={0}>
+                <Img src={`http://image.tmdb.org/t/p/w1280/${state.backdrop_path}`}></Img>
+            </Flex>
+            <Flex>
+                <SimpleGrid>
                 
-                </VStack>
+                
+                <GridItem><HStack><Heading margin={3} size='md'>Language:</Heading> <Text>{state.original_language}</Text></HStack></GridItem>
+                
+                <GridItem><HStack><Heading margin={3} size='md'>Title:</Heading> <Text>{state.original_title}</Text></HStack></GridItem>
+                <GridItem><HStack><Heading margin={3} size='md'>Budget:</Heading> <Text>{state.budget}</Text></HStack></GridItem>
+                <GridItem><HStack><Heading margin={3} size='md'>popularity:</Heading> <Text>{state.popularity}</Text></HStack></GridItem>
+                
+                <GridItem><HStack><Heading margin={3} size='md'>Overview:</Heading> <Text>{state.overview}</Text></HStack></GridItem>
+                
+                </SimpleGrid>
+            </Flex>
             </Flex>
         </Container>
         </>

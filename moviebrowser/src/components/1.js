@@ -11,7 +11,7 @@ const options = {
 async function get_data() {
   const data = await axios(options);
   
-  console.log(JSON.stringify(data.data.results));
+  console.log(data.data);
 }
 
 get_data();

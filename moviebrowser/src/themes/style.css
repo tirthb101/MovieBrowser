@@ -9,6 +9,4 @@ button:hover {
     transform: scale(1.4);
 }
 
-#back {
-    backdrop-filter: blur(15px);
-}
+
