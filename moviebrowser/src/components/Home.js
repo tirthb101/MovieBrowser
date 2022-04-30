@@ -21,14 +21,15 @@ import {
     useColorMode,
     useColorModeValue,
     useBreakpointValue,
-    Center
+    Center,
+    Image
 } from '@chakra-ui/react';
 
 function Page () {
     const { toggleColorMode } = useColorMode();
     const bgColor = useColorModeValue('gray.200', 'whiteAlpha.50');
     const colSpan = useBreakpointValue({base: 2, md: 1})
-    const [ state, setState] = useState('');
+    const [ state, setState] = useState([]);
 
     useEffect(() => {
         const options = {
@@ -53,12 +54,17 @@ function Page () {
         <>
         <Center margin={10}>
             <FormControl>
-                <FormLabel>Search</FormLabel>
-                <Input placeholder="First name"/>
+                <FormLabel><Text>Search</Text></FormLabel>
+                <Input placeholder="Search term"/>
             </FormControl>
         </Center>
-        <SimpleGrid columns={2} columnGap={3} rowGap={6}  >
-        {state.map(movie => <GridItem margin={5}>{movie.backdrop_path}</GridItem>)}
+        <SimpleGrid columns={4} columnGap={3} rowGap={6}  >
+            {state.map(movie => <GridItem>
+                <AspectRatio ratio={0.5} w={250} >
+                    <Image src={`http://image.tmdb.org/t/p/w780${movie.poster_path}`} ></Image>
+                </AspectRatio>
+                <Text>{movie.original_title}</Text>
+            </GridItem>)}
         </SimpleGrid>
         
         </>
